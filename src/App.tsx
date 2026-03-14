@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Play, ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Instagram, Youtube, MessageCircle, Mail } from 'lucide-react';
+import { Play, ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Instagram, Youtube, MessageCircle, Mail, ChevronDown } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'motion/react';
 
@@ -39,12 +39,14 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean; onClose: ()
 };
 
 const CarouselSection = ({ 
+  id,
   title, 
   videos, 
   isVertical = false,
   onPlay,
   socialLinks
 }: { 
+  id?: string;
   title: string; 
   videos: VideoItem[]; 
   isVertical?: boolean;
@@ -66,7 +68,7 @@ const CarouselSection = ({
   }, [emblaApi]);
 
   return (
-    <section className="py-16 sm:py-24 bg-black border-t border-zinc-900 overflow-hidden">
+    <section id={id} className="py-16 sm:py-24 bg-black border-t border-zinc-900 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -106,7 +108,7 @@ const CarouselSection = ({
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="overflow-hidden" 
+          className="overflow-hidden -my-8 py-8" 
           ref={emblaRef}
         >
           <div className="flex -ml-4 sm:-ml-6">
@@ -119,7 +121,7 @@ const CarouselSection = ({
                 key={video.id} 
                 className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[280px] sm:w-[360px]' : 'w-[85vw] sm:w-[600px] lg:w-[800px]'}`}
               >
-                <div className="group relative overflow-hidden bg-zinc-900 cursor-pointer" onClick={() => onPlay(video.videoId)}>
+                <div className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" onClick={() => onPlay(video.videoId)}>
                   <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
                     <img 
                       src={video.thumbnail} 
@@ -196,10 +198,11 @@ export default function App() {
       />
 
       {/* Section 1: Demoreel */}
-      <section className="relative h-screen w-full overflow-hidden bg-black">
-        <div className="video-container">
+      <section className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center">
+        <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
           <iframe
             src="https://www.youtube.com/embed/jtjK7z_o-7A?autoplay=1&mute=1&loop=1&playlist=jtjK7z_o-7A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100dvh] min-w-[177.77dvh] -translate-x-1/2 -translate-y-1/2 border-none max-w-none"
             allow="autoplay; encrypted-media"
             allowFullScreen
             tabIndex={-1}
@@ -237,10 +240,21 @@ export default function App() {
             <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
           </motion.a>
         </div>
+
+        <motion.a
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          href="#sobre"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 hover:text-white transition-colors animate-bounce z-20"
+          aria-label="Scroll down"
+        >
+          <ChevronDown className="w-8 h-8 sm:w-10 sm:h-10" />
+        </motion.a>
       </section>
 
       {/* Section 2: Breve descrição */}
-      <section className="py-20 sm:py-32 bg-zinc-950 overflow-hidden">
+      <section id="sobre" className="py-20 sm:py-32 bg-zinc-950 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
             <motion.div 
@@ -263,7 +277,7 @@ export default function App() {
               className="lg:col-span-7 lg:pl-12 border-t border-zinc-800 pt-6 sm:pt-8 lg:border-t-0 lg:border-l lg:pt-0"
             >
               <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light">
-                A <strong className="text-white font-medium">Sintagma Mídia</strong> é uma produtora especializada em conteúdo audiovisual para campanhas políticas, comunicação pública e presença digital, desenvolvendo vídeos estratégicos para televisão, internet e redes sociais.
+                A <strong className="text-white font-medium">SintagmaFilms</strong> é uma produtora especializada em conteúdo audiovisual para campanhas políticas, comunicação pública e presença digital, desenvolvendo vídeos estratégicos para televisão, internet e redes sociais.
               </p>
             </motion.div>
           </div>
@@ -272,6 +286,7 @@ export default function App() {
 
       {/* Section 4: Geração de conteúdo (Dynamic from YouTube) */}
       <CarouselSection 
+        id="portfolio"
         title="Conteúdo Digital" 
         videos={youtubeVideos} 
         isVertical={false}
@@ -353,7 +368,7 @@ export default function App() {
               className="lg:pt-4 flex flex-col justify-center space-y-4 sm:space-y-6"
             >
               <a 
-                href="https://wa.me/5543999477677?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Sintagma%20M%C3%ADdia."
+                href="https://wa.me/5543999477677?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20SintagmaFilms."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-display font-bold uppercase tracking-wider py-4 sm:py-6 px-6 sm:px-8 rounded-none transition-all flex items-center justify-between text-base sm:text-lg md:text-xl"
@@ -385,7 +400,7 @@ export default function App() {
       <footer className="bg-black py-8 sm:py-12 border-t border-zinc-900">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left">
           <div className="text-xl sm:text-2xl font-display font-black text-white tracking-tighter uppercase">
-            Sintagma <span className="text-sky-400">Mídia</span>
+            Sintagma<span className="text-sky-400">Films</span>
           </div>
           <p className="text-zinc-600 text-xs sm:text-sm font-display uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Todos os direitos reservados.
