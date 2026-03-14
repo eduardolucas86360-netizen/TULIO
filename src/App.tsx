@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Play, ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Instagram, Youtube, MessageCircle, Mail, ChevronDown } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'motion/react';
+import CustomCursor from './components/CustomCursor';
 
 // --- Types ---
 type VideoItem = {
@@ -71,10 +72,10 @@ const CarouselSection = ({
     <section id={id} className="py-16 sm:py-24 bg-black border-t border-zinc-900 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-6"
         >
           <div>
@@ -114,14 +115,14 @@ const CarouselSection = ({
           <div className="flex -ml-4 sm:-ml-6">
             {videos.length > 0 ? videos.map((video, index) => (
               <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
                 key={video.id} 
                 className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[280px] sm:w-[360px]' : 'w-[85vw] sm:w-[600px] lg:w-[800px]'}`}
               >
-                <div className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" onClick={() => onPlay(video.videoId)}>
+                <div className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" onClick={() => onPlay(video.videoId)} data-video-hover="true">
                   <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
                     <img 
                       src={video.thumbnail} 
@@ -191,6 +192,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black font-sans text-zinc-300 selection:bg-sky-500/30">
+      <CustomCursor />
       <VideoModal 
         isOpen={!!activeVideo} 
         videoId={activeVideo} 
@@ -198,7 +200,7 @@ export default function App() {
       />
 
       {/* Section 1: Demoreel */}
-      <section className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center">
+      <section className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center" data-video-hover="true">
         <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
           <iframe
             src="https://www.youtube.com/embed/jtjK7z_o-7A?autoplay=1&mute=1&loop=1&playlist=jtjK7z_o-7A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -258,10 +260,10 @@ export default function App() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="lg:col-span-5"
             >
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white uppercase tracking-tighter leading-tight">
@@ -270,10 +272,10 @@ export default function App() {
               </h2>
             </motion.div>
             <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="lg:col-span-7 lg:pl-12 border-t border-zinc-800 pt-6 sm:pt-8 lg:border-t-0 lg:border-l lg:pt-0"
             >
               <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light">
@@ -324,8 +326,8 @@ export default function App() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <h2 className="text-5xl sm:text-6xl md:text-8xl font-display font-black text-white uppercase tracking-tighter mb-6 sm:mb-8 leading-none">
                 Fale <br/>
@@ -363,8 +365,8 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="lg:pt-4 flex flex-col justify-center space-y-4 sm:space-y-6"
             >
               <a 
@@ -397,15 +399,21 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black py-8 sm:py-12 border-t border-zinc-900">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left">
+      <footer className="bg-black py-8 sm:py-12 border-t border-zinc-900 overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left"
+        >
           <div className="text-xl sm:text-2xl font-display font-black text-white tracking-tighter uppercase">
             Sintagma<span className="text-sky-400">Films</span>
           </div>
           <p className="text-zinc-600 text-xs sm:text-sm font-display uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Todos os direitos reservados.
           </p>
-        </div>
+        </motion.div>
       </footer>
     </div>
   );
