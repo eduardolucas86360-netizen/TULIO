@@ -367,17 +367,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black font-sans text-zinc-300 selection:bg-sky-500/30">
       <CustomCursor />
-      
-      {/* Liquid Distortion SVG Filter */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
-        <filter id="liquid-distortion" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.015 0.02" numOctaves="3" result="noise">
-            <animate attributeName="baseFrequency" values="0.015 0.02; 0.025 0.04; 0.015 0.02" dur="4s" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
-
       <VideoModal 
         isOpen={!!activeVideo} 
         videoId={activeVideo} 
@@ -413,7 +402,7 @@ export default function App() {
                 }
               }
             }}
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-black text-white mb-4 sm:mb-6 tracking-tighter uppercase leading-[1.1] sm:leading-[0.9] perspective-[1000px] hover:[filter:url(#liquid-distortion)] transition-all duration-500 cursor-default"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-black text-white mb-4 sm:mb-6 tracking-tighter uppercase leading-[1.1] sm:leading-[0.9] perspective-[1000px]"
           >
             <span className="inline-block">
               {"Produção".split("").map((char, index) => (
