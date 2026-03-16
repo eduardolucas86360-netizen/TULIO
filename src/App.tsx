@@ -3,6 +3,7 @@ import { Play, ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Instagram
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'motion/react';
 import CustomCursor from './components/CustomCursor';
+import { getOptimizedImageUrl } from './utils/cdn';
 
 // --- Types ---
 type VideoItem = {
@@ -77,7 +78,7 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
       >
         <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden`}>
           <img 
-            src={video.thumbnail} 
+            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 360 : 800)} 
             alt={`Thumbnail do vídeo: ${video.title} - SintagmaFilms Produtora Audiovisual`}
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
             referrerPolicy="no-referrer"
