@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Play, ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Instagram, Youtube, MessageCircle, Mail, ChevronDown } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'motion/react';
@@ -36,6 +36,87 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean; onClose: ()
         />
       </div>
     </div>
+  );
+};
+
+const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isVertical?: boolean, onPlay: (id: string) => void, index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [showIframe, setShowIframe] = useState(false);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // Delay loading the iframe to prevent accidental loads while scrolling/moving mouse quickly
+    hoverTimeoutRef.current = setTimeout(() => {
+      setShowIframe(true);
+    }, 300);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setShowIframe(false);
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+      className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[280px] sm:w-[360px]' : 'w-[85vw] sm:w-[600px] lg:w-[800px]'}`}
+    >
+      <article 
+        className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" 
+        onClick={() => onPlay(video.videoId)} 
+        data-video-hover="true"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden`}>
+          <img 
+            src={video.thumbnail} 
+            alt={`Thumbnail do vídeo: ${video.title} - SintagmaFilms Produtora Audiovisual`}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
+            referrerPolicy="no-referrer"
+            loading="lazy"
+          />
+          
+          {showIframe && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }} // Fade in after iframe has some time to load
+              className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
+            >
+              <iframe
+                src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=${video.videoId}`}
+                className="absolute top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2 border-none max-w-none pointer-events-none scale-[1.35]"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                tabIndex={-1}
+                loading="lazy"
+              />
+            </motion.div>
+          )}
+
+          <div className={`absolute inset-0 transition-colors duration-500 z-10 ${showIframe ? 'bg-transparent' : 'bg-black/40 group-hover:bg-black/10'}`} />
+          
+          <div className={`absolute inset-0 flex items-center justify-center z-20 transition-opacity duration-500 ${showIframe ? 'opacity-0' : 'opacity-100'}`}>
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center text-white transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500">
+              <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" fill="currentColor" />
+            </div>
+          </div>
+        </div>
+        <div className="py-4 sm:py-6 relative z-20 bg-zinc-900">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-display font-semibold text-white uppercase tracking-tight line-clamp-2">
+            {video.title}
+          </h3>
+        </div>
+      </article>
+    </motion.div>
   );
 };
 
@@ -114,37 +195,13 @@ const CarouselSection = ({
         >
           <div className="flex -ml-4 sm:-ml-6">
             {videos.length > 0 ? videos.map((video, index) => (
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+              <VideoCard 
                 key={video.id} 
-                className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[280px] sm:w-[360px]' : 'w-[85vw] sm:w-[600px] lg:w-[800px]'}`}
-              >
-                <div className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" onClick={() => onPlay(video.videoId)} data-video-hover="true">
-                  <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500" />
-                    
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center text-white transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500">
-                        <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" fill="currentColor" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="py-4 sm:py-6">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-display font-semibold text-white uppercase tracking-tight line-clamp-2">
-                      {video.title}
-                    </h3>
-                  </div>
-                </div>
-              </motion.div>
+                video={video} 
+                isVertical={isVertical} 
+                onPlay={onPlay} 
+                index={index} 
+              />
             )) : (
               <div className="pl-4 sm:pl-6 text-zinc-500 font-display uppercase tracking-widest text-sm sm:text-base">Carregando vídeos...</div>
             )}
@@ -152,6 +209,123 @@ const CarouselSection = ({
         </motion.div>
       </div>
     </section>
+  );
+};
+
+const BriefingForm = () => {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [formData, setFormData] = useState({
+    nome: '',
+    empresa: '',
+    objetivo: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    
+    // Simulate network request
+    setTimeout(() => {
+      // Construct email body
+      const subject = encodeURIComponent(`Novo Briefing: ${formData.empresa} - ${formData.nome}`);
+      const body = encodeURIComponent(
+        `Nome: ${formData.nome}\nEmpresa: ${formData.empresa}\nObjetivo do Projeto: ${formData.objetivo}`
+      );
+      
+      // Open default email client
+      window.location.href = `mailto:sintagmafilmes@gmail.com?subject=${subject}&body=${body}`;
+      
+      setStatus('success');
+      setFormData({ nome: '', empresa: '', objetivo: '' });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setStatus('idle'), 5000);
+    }, 800);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
+        <div className="w-16 h-16 bg-sky-500/20 text-sky-400 rounded-full flex items-center justify-center mb-4">
+          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-tighter mb-2">Briefing Enviado!</h3>
+        <p className="text-zinc-400 font-display">Obrigado pelo interesse. Seu cliente de e-mail foi aberto com os dados do projeto. Entraremos em contato em breve.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 flex flex-col space-y-4 sm:space-y-6">
+      <div>
+        <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-tighter mb-2">Iniciar Projeto</h3>
+        <p className="text-zinc-400 text-sm sm:text-base font-display mb-4">Preencha o briefing rápido e enviaremos uma proposta.</p>
+      </div>
+      
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="nome" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Nome Completo</label>
+          <input 
+            type="text" 
+            id="nome" 
+            name="nome" 
+            required
+            value={formData.nome}
+            onChange={handleChange}
+            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display"
+            placeholder="Seu nome"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="empresa" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Empresa</label>
+          <input 
+            type="text" 
+            id="empresa" 
+            name="empresa" 
+            required
+            value={formData.empresa}
+            onChange={handleChange}
+            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display"
+            placeholder="Nome da sua empresa"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="objetivo" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Objetivo do Projeto</label>
+          <select 
+            id="objetivo" 
+            name="objetivo" 
+            required
+            value={formData.objetivo}
+            onChange={handleChange}
+            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display appearance-none"
+          >
+            <option value="" disabled>Selecione uma opção</option>
+            <option value="Vídeo Institucional">Vídeo Institucional</option>
+            <option value="Comercial / Publicidade">Comercial / Publicidade</option>
+            <option value="Cobertura de Evento">Cobertura de Evento</option>
+            <option value="Conteúdo para Redes Sociais">Conteúdo para Redes Sociais</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+      </div>
+      
+      <button 
+        type="submit" 
+        disabled={status === 'submitting'}
+        className="w-full bg-white hover:bg-zinc-200 text-black font-display font-bold uppercase tracking-wider py-4 px-6 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+      >
+        {status === 'submitting' ? 'Enviando...' : 'Enviar Briefing'}
+        {status !== 'submitting' && <ArrowRight className="w-5 h-5" />}
+      </button>
+    </form>
   );
 };
 
@@ -200,7 +374,7 @@ export default function App() {
       />
 
       {/* Section 1: Demoreel */}
-      <section className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center" data-video-hover="true">
+      <header className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center" data-video-hover="true">
         <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
           <iframe
             src="https://www.youtube.com/embed/jtjK7z_o-7A?autoplay=1&mute=1&loop=1&playlist=jtjK7z_o-7A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -215,18 +389,65 @@ export default function App() {
 
         <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 sm:px-6 max-w-[1400px] mx-auto">
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-black text-white mb-4 sm:mb-6 tracking-tighter uppercase leading-[1.1] sm:leading-[0.9]"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.06,
+                  delayChildren: 0.2,
+                }
+              }
+            }}
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-black text-white mb-4 sm:mb-6 tracking-tighter uppercase leading-[1.1] sm:leading-[0.9] perspective-[1000px]"
           >
-            Produção <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">Audiovisual</span>
+            <span className="inline-block">
+              {"Produção".split("").map((char, index) => (
+                <motion.span 
+                  key={index} 
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -40 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      rotateX: 0,
+                      transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }
+                    }
+                  }} 
+                  className="inline-block origin-bottom"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+            <br className="hidden sm:block" />
+            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
+              {"Audiovisual".split("").map((char, index) => (
+                <motion.span 
+                  key={index} 
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -40 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      rotateX: 0,
+                      transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }
+                    }
+                  }} 
+                  className="inline-block origin-bottom"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
             className="text-base sm:text-lg md:text-2xl text-zinc-300 mb-8 sm:mb-12 max-w-3xl font-light tracking-wide px-2"
           >
             Conteúdo estratégico para campanhas políticas, comunicação institucional e presença digital.
@@ -234,7 +455,7 @@ export default function App() {
           <motion.a 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
             href="#contato"
             className="group flex items-center gap-3 sm:gap-4 bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-display font-bold uppercase tracking-wider text-xs sm:text-sm md:text-base transition-all hover:bg-sky-400 hover:text-white"
           >
@@ -246,23 +467,24 @@ export default function App() {
         <motion.a
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
+          transition={{ delay: 1.8, duration: 1 }}
           href="#sobre"
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 hover:text-white transition-colors animate-bounce z-20"
           aria-label="Scroll down"
         >
           <ChevronDown className="w-8 h-8 sm:w-10 sm:h-10" />
         </motion.a>
-      </section>
+      </header>
 
-      {/* Section 2: Breve descrição */}
+      <main>
+        {/* Section 2: Breve descrição */}
       <section id="sobre" className="py-20 sm:py-32 bg-zinc-950 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="lg:col-span-5"
             >
@@ -272,14 +494,17 @@ export default function App() {
               </h2>
             </motion.div>
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="lg:col-span-7 lg:pl-12 border-t border-zinc-800 pt-6 sm:pt-8 lg:border-t-0 lg:border-l lg:pt-0"
             >
-              <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light">
-                A <strong className="text-white font-medium">SintagmaFilms</strong> é uma produtora especializada em conteúdo audiovisual para campanhas políticas, comunicação pública e presença digital, desenvolvendo vídeos estratégicos para televisão, internet e redes sociais.
+              <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light mb-6">
+                A <strong className="text-white font-medium">SintagmaFilms</strong> é uma <strong className="text-white font-medium">produtora audiovisual em Londrina</strong> especializada em conteúdo para campanhas políticas, comunicação pública e presença digital.
+              </p>
+              <p className="text-lg sm:text-xl text-zinc-500 leading-relaxed font-light">
+                Desenvolvemos vídeos estratégicos de alta qualidade para televisão, internet e redes sociais, conectando sua mensagem ao público certo com impacto e criatividade.
               </p>
             </motion.div>
           </div>
@@ -339,21 +564,21 @@ export default function App() {
               
               <div className="space-y-8 sm:space-y-10">
                 <div>
-                  <h4 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Telefone</h4>
+                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Telefone</h3>
                   <a href="tel:+5543999477677" className="text-white text-2xl sm:text-3xl md:text-4xl font-display font-medium hover:text-sky-400 transition-colors">
                     +55 43 99947-7677
                   </a>
                 </div>
                 
                 <div>
-                  <h4 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</h4>
+                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</h3>
                   <a href="mailto:sintagmafilmes@gmail.com" className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium hover:text-sky-400 transition-colors break-all">
                     sintagmafilmes@gmail.com
                   </a>
                 </div>
                 
                 <div>
-                  <h4 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Localização</h4>
+                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Localização</h3>
                   <p className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium">
                     Londrina, PR
                   </p>
@@ -382,21 +607,14 @@ export default function App() {
                 <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 flex-shrink-0" />
               </a>
 
-              <a 
-                href="mailto:sintagmafilmes@gmail.com?subject=Contato%20via%20Site"
-                className="group w-full bg-white hover:bg-zinc-200 text-black font-display font-bold uppercase tracking-wider py-4 sm:py-6 px-6 sm:px-8 rounded-none transition-all flex items-center justify-between text-base sm:text-lg md:text-xl"
-              >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <Mail className="w-6 h-6 sm:w-8 sm:h-8" />
-                  <span className="text-left">Enviar um E-mail</span>
-                </div>
-                <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 flex-shrink-0" />
-              </a>
+              <BriefingForm />
             </motion.div>
             
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="bg-black py-8 sm:py-12 border-t border-zinc-900 overflow-hidden">
