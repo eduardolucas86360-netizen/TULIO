@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 /**
  * Utility function to resolve asset URLs through a Content Delivery Network (CDN).
  * 
