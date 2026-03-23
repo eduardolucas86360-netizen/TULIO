@@ -330,99 +330,6 @@ const BriefingForm = () => {
   );
 };
 
-const FALLBACK_CHANNEL_VIDEOS: VideoItem[] = [
-  {
-    "id": "_HnT1Rbs_3Y",
-    "title": "INSTITUCIONAL IBIPORA 09 05 2025 c legenda",
-    "thumbnail": "https://i.ytimg.com/vi/_HnT1Rbs_3Y/hqdefault.jpg",
-    "videoId": "_HnT1Rbs_3Y"
-  },
-  {
-    "id": "_Dq45eJKYXg",
-    "title": "Filme Trimble/Veltec",
-    "thumbnail": "https://i.ytimg.com/vi/_Dq45eJKYXg/hqdefault.jpg",
-    "videoId": "_Dq45eJKYXg"
-  },
-  {
-    "id": "nycy0RdnIXk",
-    "title": "Filme Institucional Geodata",
-    "thumbnail": "https://i.ytimg.com/vi/nycy0RdnIXk/hqdefault.jpg",
-    "videoId": "nycy0RdnIXk"
-  },
-  {
-    "id": "E6BJEIOpAKU",
-    "title": "Abertura Superagro 2020",
-    "thumbnail": "https://i.ytimg.com/vi/E6BJEIOpAKU/hqdefault.jpg",
-    "videoId": "E6BJEIOpAKU"
-  },
-  {
-    "id": "uRyDQVbtoKU",
-    "title": "Filme Brandt 5 Anos",
-    "thumbnail": "https://i.ytimg.com/vi/uRyDQVbtoKU/hqdefault.jpg",
-    "videoId": "uRyDQVbtoKU"
-  },
-  {
-    "id": "SpIw-9elkxs",
-    "title": "Filme Sementes Boa Nova",
-    "thumbnail": "https://i.ytimg.com/vi/SpIw-9elkxs/hqdefault.jpg",
-    "videoId": "SpIw-9elkxs"
-  },
-  {
-    "id": "AnAgnQXUf-c",
-    "title": "Documentário Mário Loureiro",
-    "thumbnail": "https://i.ytimg.com/vi/AnAgnQXUf-c/hqdefault.jpg",
-    "videoId": "AnAgnQXUf-c"
-  },
-  {
-    "id": "ODuhYBNJB10",
-    "title": "Filme Institucional - SJF - Impermeabilização em PU Flexível",
-    "thumbnail": "https://i.ytimg.com/vi/ODuhYBNJB10/hqdefault.jpg",
-    "videoId": "ODuhYBNJB10"
-  },
-  {
-    "id": "1kd_niyk9Pw",
-    "title": "Makers - St james",
-    "thumbnail": "https://i.ytimg.com/vi/1kd_niyk9Pw/hqdefault.jpg",
-    "videoId": "1kd_niyk9Pw"
-  },
-  {
-    "id": "QawFlxRHQgk",
-    "title": "Zen Zone - St James",
-    "thumbnail": "https://i.ytimg.com/vi/QawFlxRHQgk/hqdefault.jpg",
-    "videoId": "QawFlxRHQgk"
-  },
-  {
-    "id": "hsgbgTUghqs",
-    "title": "Flyers - St James",
-    "thumbnail": "https://i.ytimg.com/vi/hsgbgTUghqs/hqdefault.jpg",
-    "videoId": "hsgbgTUghqs"
-  },
-  {
-    "id": "xvasjER-wSg",
-    "title": "Sementinha - St James",
-    "thumbnail": "https://i.ytimg.com/vi/xvasjER-wSg/hqdefault.jpg",
-    "videoId": "xvasjER-wSg"
-  },
-  {
-    "id": "lo2v9uhEKX0",
-    "title": "Filme Institucional - Ebmac",
-    "thumbnail": "https://i.ytimg.com/vi/lo2v9uhEKX0/hqdefault.jpg",
-    "videoId": "lo2v9uhEKX0"
-  },
-  {
-    "id": "6QArJDJYfYI",
-    "title": "Filme Publicitário - Plano de Saúde Hospitalar",
-    "thumbnail": "https://i.ytimg.com/vi/6QArJDJYfYI/hqdefault.jpg",
-    "videoId": "6QArJDJYfYI"
-  },
-  {
-    "id": "rANLm7xgy-8",
-    "title": "Reel - Sintagma Midia",
-    "thumbnail": "https://i.ytimg.com/vi/rANLm7xgy-8/hqdefault.jpg",
-    "videoId": "rANLm7xgy-8"
-  }
-];
-
 const FALLBACK_PLAYLIST_VIDEOS: VideoItem[] = [
   {
     id: "wMysbzl1f2A",
@@ -674,7 +581,6 @@ const FALLBACK_POLITICS_VIDEOS: VideoItem[] = [
 
 export default function App() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [youtubeVideos, setYoutubeVideos] = useState<VideoItem[]>(FALLBACK_CHANNEL_VIDEOS);
   const [documentaryVideos, setDocumentaryVideos] = useState<VideoItem[]>(FALLBACK_PLAYLIST_VIDEOS);
   const [eventsVideos, setEventsVideos] = useState<VideoItem[]>(FALLBACK_EVENTS_VIDEOS);
   const [reelsVideos, setReelsVideos] = useState<VideoItem[]>(FALLBACK_REELS_VIDEOS);
@@ -831,37 +737,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      {/* Section 4: Geração de conteúdo (Dynamic from YouTube) */}
-      <CarouselSection 
-        id="portfolio"
-        title="Conteúdo Digital" 
-        videos={youtubeVideos} 
-        isVertical={false}
-        onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/@SintagmaMidia" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              YouTube
-            </a>
-            <a 
-              href="https://www.instagram.com/sintagmafilmes" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-pink-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Instagram className="w-5 h-5" />
-              Instagram
-            </a>
-          </>
-        }
-      />
 
       {/* Section 5: Documentário e Cultura */}
       <CarouselSection 
