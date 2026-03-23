@@ -150,7 +150,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
             className="absolute inset-0 pointer-events-none backdrop-blur-md bg-black/20"
             initial={{ backdropFilter: "blur(10px)" }}
             animate={{ backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "power2.out" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
           />
         </motion.div>
       )}

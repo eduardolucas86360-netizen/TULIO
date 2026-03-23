@@ -330,39 +330,359 @@ const BriefingForm = () => {
   );
 };
 
+const FALLBACK_CHANNEL_VIDEOS: VideoItem[] = [
+  {
+    "id": "_HnT1Rbs_3Y",
+    "title": "INSTITUCIONAL IBIPORA 09 05 2025 c legenda",
+    "thumbnail": "https://i.ytimg.com/vi/_HnT1Rbs_3Y/hqdefault.jpg",
+    "videoId": "_HnT1Rbs_3Y"
+  },
+  {
+    "id": "_Dq45eJKYXg",
+    "title": "Filme Trimble/Veltec",
+    "thumbnail": "https://i.ytimg.com/vi/_Dq45eJKYXg/hqdefault.jpg",
+    "videoId": "_Dq45eJKYXg"
+  },
+  {
+    "id": "nycy0RdnIXk",
+    "title": "Filme Institucional Geodata",
+    "thumbnail": "https://i.ytimg.com/vi/nycy0RdnIXk/hqdefault.jpg",
+    "videoId": "nycy0RdnIXk"
+  },
+  {
+    "id": "E6BJEIOpAKU",
+    "title": "Abertura Superagro 2020",
+    "thumbnail": "https://i.ytimg.com/vi/E6BJEIOpAKU/hqdefault.jpg",
+    "videoId": "E6BJEIOpAKU"
+  },
+  {
+    "id": "uRyDQVbtoKU",
+    "title": "Filme Brandt 5 Anos",
+    "thumbnail": "https://i.ytimg.com/vi/uRyDQVbtoKU/hqdefault.jpg",
+    "videoId": "uRyDQVbtoKU"
+  },
+  {
+    "id": "SpIw-9elkxs",
+    "title": "Filme Sementes Boa Nova",
+    "thumbnail": "https://i.ytimg.com/vi/SpIw-9elkxs/hqdefault.jpg",
+    "videoId": "SpIw-9elkxs"
+  },
+  {
+    "id": "AnAgnQXUf-c",
+    "title": "Documentário Mário Loureiro",
+    "thumbnail": "https://i.ytimg.com/vi/AnAgnQXUf-c/hqdefault.jpg",
+    "videoId": "AnAgnQXUf-c"
+  },
+  {
+    "id": "ODuhYBNJB10",
+    "title": "Filme Institucional - SJF - Impermeabilização em PU Flexível",
+    "thumbnail": "https://i.ytimg.com/vi/ODuhYBNJB10/hqdefault.jpg",
+    "videoId": "ODuhYBNJB10"
+  },
+  {
+    "id": "1kd_niyk9Pw",
+    "title": "Makers - St james",
+    "thumbnail": "https://i.ytimg.com/vi/1kd_niyk9Pw/hqdefault.jpg",
+    "videoId": "1kd_niyk9Pw"
+  },
+  {
+    "id": "QawFlxRHQgk",
+    "title": "Zen Zone - St James",
+    "thumbnail": "https://i.ytimg.com/vi/QawFlxRHQgk/hqdefault.jpg",
+    "videoId": "QawFlxRHQgk"
+  },
+  {
+    "id": "hsgbgTUghqs",
+    "title": "Flyers - St James",
+    "thumbnail": "https://i.ytimg.com/vi/hsgbgTUghqs/hqdefault.jpg",
+    "videoId": "hsgbgTUghqs"
+  },
+  {
+    "id": "xvasjER-wSg",
+    "title": "Sementinha - St James",
+    "thumbnail": "https://i.ytimg.com/vi/xvasjER-wSg/hqdefault.jpg",
+    "videoId": "xvasjER-wSg"
+  },
+  {
+    "id": "lo2v9uhEKX0",
+    "title": "Filme Institucional - Ebmac",
+    "thumbnail": "https://i.ytimg.com/vi/lo2v9uhEKX0/hqdefault.jpg",
+    "videoId": "lo2v9uhEKX0"
+  },
+  {
+    "id": "6QArJDJYfYI",
+    "title": "Filme Publicitário - Plano de Saúde Hospitalar",
+    "thumbnail": "https://i.ytimg.com/vi/6QArJDJYfYI/hqdefault.jpg",
+    "videoId": "6QArJDJYfYI"
+  },
+  {
+    "id": "rANLm7xgy-8",
+    "title": "Reel - Sintagma Midia",
+    "thumbnail": "https://i.ytimg.com/vi/rANLm7xgy-8/hqdefault.jpg",
+    "videoId": "rANLm7xgy-8"
+  }
+];
+
+const FALLBACK_PLAYLIST_VIDEOS: VideoItem[] = [
+  {
+    id: "wMysbzl1f2A",
+    title: "Doc. Cambé Vigilância Sanitaria",
+    thumbnail: "https://i.ytimg.com/vi/wMysbzl1f2A/hqdefault.jpg",
+    videoId: "wMysbzl1f2A"
+  },
+  {
+    id: "-W_zXjsJ4-g",
+    title: "Projeto New Look   final",
+    thumbnail: "https://i.ytimg.com/vi/-W_zXjsJ4-g/hqdefault.jpg",
+    videoId: "-W_zXjsJ4-g"
+  },
+  {
+    id: "972uDmv0JDY",
+    title: "Henrique de Aragão – Um Artista Transcendente   FHD 1080p",
+    thumbnail: "https://i.ytimg.com/vi/972uDmv0JDY/hqdefault.jpg",
+    videoId: "972uDmv0JDY"
+  },
+  {
+    id: "daBfvAD7660",
+    title: "O Agro Nos Move   Piloto Programa TV",
+    thumbnail: "https://i.ytimg.com/vi/daBfvAD7660/hqdefault.jpg",
+    videoId: "daBfvAD7660"
+  },
+  {
+    id: "hnhO5tvLseM",
+    title: "DOC IBIAFRO 2024   MESTRE CLAUDIO   c legend E GC",
+    thumbnail: "https://i.ytimg.com/vi/hnhO5tvLseM/hqdefault.jpg",
+    videoId: "hnhO5tvLseM"
+  }
+];
+
+const FALLBACK_EVENTS_VIDEOS: VideoItem[] = [
+  {
+    id: "4T6NXlSAGxk",
+    title: "Quadra   Inauguracao Predio",
+    thumbnail: "https://i.ytimg.com/vi/4T6NXlSAGxk/hqdefault.jpg",
+    videoId: "4T6NXlSAGxk"
+  },
+  {
+    id: "JdLkdhoI50E",
+    title: "Sicoob 15 anos   compacto",
+    thumbnail: "https://i.ytimg.com/vi/JdLkdhoI50E/hqdefault.jpg",
+    videoId: "JdLkdhoI50E"
+  },
+  {
+    id: "ZDsVp5FVpSo",
+    title: "Superagro Evento Geral",
+    thumbnail: "https://i.ytimg.com/vi/ZDsVp5FVpSo/hqdefault.jpg",
+    videoId: "ZDsVp5FVpSo"
+  },
+  {
+    id: "bifnj3Ztz_g",
+    title: "Sicoob   Cantata de Natal   Trailer",
+    thumbnail: "https://i.ytimg.com/vi/bifnj3Ztz_g/hqdefault.jpg",
+    videoId: "bifnj3Ztz_g"
+  }
+];
+
+const FALLBACK_REELS_VIDEOS: VideoItem[] = [
+  {
+    "id": "2x4vs7StSto",
+    "title": "reels011 ibip obras prefeitura",
+    "thumbnail": "https://i.ytimg.com/vi/2x4vs7StSto/hqdefault.jpg",
+    "videoId": "2x4vs7StSto"
+  },
+  {
+    "id": "3l8ald-AJK8",
+    "title": "Londrina CARTELA 1080x1920 F",
+    "thumbnail": "https://i.ytimg.com/vi/3l8ald-AJK8/hqdefault.jpg",
+    "videoId": "3l8ald-AJK8"
+  },
+  {
+    "id": "6BoN3vDkxk8",
+    "title": "amepar reels",
+    "thumbnail": "https://i.ytimg.com/vi/6BoN3vDkxk8/hqdefault.jpg",
+    "videoId": "6BoN3vDkxk8"
+  },
+  {
+    "id": "VpYR4HGZnxY",
+    "title": "gleba set   02 crescimento londrina",
+    "thumbnail": "https://i.ytimg.com/vi/VpYR4HGZnxY/hqdefault.jpg",
+    "videoId": "VpYR4HGZnxY"
+  },
+  {
+    "id": "Vwyt7YrsR44",
+    "title": "Camara Apucarana Cafés   02",
+    "thumbnail": "https://i.ytimg.com/vi/Vwyt7YrsR44/hqdefault.jpg",
+    "videoId": "Vwyt7YrsR44"
+  },
+  {
+    "id": "jAagznuOtwc",
+    "title": "BR Coins 01   Instagram",
+    "thumbnail": "https://i.ytimg.com/vi/jAagznuOtwc/hqdefault.jpg",
+    "videoId": "jAagznuOtwc"
+  },
+  {
+    "id": "lIVlhauiyCc",
+    "title": "Ibipora reels 1 transito",
+    "thumbnail": "https://i.ytimg.com/vi/lIVlhauiyCc/hqdefault.jpg",
+    "videoId": "lIVlhauiyCc"
+  },
+  {
+    "id": "onpWbJc-99I",
+    "title": "reels12 escorpiao",
+    "thumbnail": "https://i.ytimg.com/vi/onpWbJc-99I/hqdefault.jpg",
+    "videoId": "onpWbJc-99I"
+  },
+  {
+    "id": "um2tZ7O2c-A",
+    "title": "teaser barretao 70tao",
+    "thumbnail": "https://i.ytimg.com/vi/um2tZ7O2c-A/hqdefault.jpg",
+    "videoId": "um2tZ7O2c-A"
+  }
+];
+
+const FALLBACK_INSTITUTIONAL_VIDEOS: VideoItem[] = [
+  {
+    id: "foSgpqZjFrI",
+    title: "Institucional Grupo Rossetto",
+    thumbnail: "https://i.ytimg.com/vi/foSgpqZjFrI/hqdefault.jpg",
+    videoId: "foSgpqZjFrI"
+  },
+  {
+    id: "Syq3pa9ix8g",
+    title: "Institucional Forquimica",
+    thumbnail: "https://i.ytimg.com/vi/Syq3pa9ix8g/hqdefault.jpg",
+    videoId: "Syq3pa9ix8g"
+  },
+  {
+    id: "PS3VGSZb_9E",
+    title: "Institucional Ceramica Cidade Nova",
+    thumbnail: "https://i.ytimg.com/vi/PS3VGSZb_9E/hqdefault.jpg",
+    videoId: "PS3VGSZb_9E"
+  },
+  {
+    id: "0v6ys4xxdYY",
+    title: "AMEPAR Instittucional",
+    thumbnail: "https://i.ytimg.com/vi/0v6ys4xxdYY/hqdefault.jpg",
+    videoId: "0v6ys4xxdYY"
+  },
+  {
+    id: "PcVzKS69m18",
+    title: "Institucional Stevia Natus",
+    thumbnail: "https://i.ytimg.com/vi/PcVzKS69m18/hqdefault.jpg",
+    videoId: "PcVzKS69m18"
+  }
+];
+
+const FALLBACK_POLITICS_VIDEOS: VideoItem[] = [
+  {
+    "id": "F4XunaSaGgI",
+    "title": "Hauly   Programa Arapongas",
+    "thumbnail": "https://i.ytimg.com/vi/F4XunaSaGgI/hqdefault.jpg",
+    "videoId": "F4XunaSaGgI"
+  },
+  {
+    "id": "MJS-aAE-b_8",
+    "title": "Hauly   Programa Paraná",
+    "thumbnail": "https://i.ytimg.com/vi/MJS-aAE-b_8/hqdefault.jpg",
+    "videoId": "MJS-aAE-b_8"
+  },
+  {
+    "id": "UczFKlx0fz8",
+    "title": "Paulinho Vilela   PROG 06   propostas",
+    "thumbnail": "https://i.ytimg.com/vi/UczFKlx0fz8/hqdefault.jpg",
+    "videoId": "UczFKlx0fz8"
+  },
+  {
+    "id": "_yVTPx7m2Ak",
+    "title": "VT   70 anos Ibipora 30s",
+    "thumbnail": "https://i.ytimg.com/vi/_yVTPx7m2Ak/hqdefault.jpg",
+    "videoId": "_yVTPx7m2Ak"
+  },
+  {
+    "id": "aSvGUy2uvEo",
+    "title": "POLITICA   lancamento campanha juninho",
+    "thumbnail": "https://i.ytimg.com/vi/aSvGUy2uvEo/hqdefault.jpg",
+    "videoId": "aSvGUy2uvEo"
+  },
+  {
+    "id": "cd4zsVr8jHE",
+    "title": "VT 74 Anos Ibipora   Internet",
+    "thumbnail": "https://i.ytimg.com/vi/cd4zsVr8jHE/hqdefault.jpg",
+    "videoId": "cd4zsVr8jHE"
+  },
+  {
+    "id": "k1eBzNzIE8Q",
+    "title": "Paulinho Vilela   PROG 01   intro",
+    "thumbnail": "https://i.ytimg.com/vi/k1eBzNzIE8Q/hqdefault.jpg",
+    "videoId": "k1eBzNzIE8Q"
+  },
+  {
+    "id": "krgxqtlZw_o",
+    "title": "VT Pref Ibipora   IPTU 2018",
+    "thumbnail": "https://i.ytimg.com/vi/krgxqtlZw_o/hqdefault.jpg",
+    "videoId": "krgxqtlZw_o"
+  },
+  {
+    "id": "l-QxPYCPFMI",
+    "title": "VT IBIPORA ROÇAGEM 2024   Internet",
+    "thumbnail": "https://i.ytimg.com/vi/l-QxPYCPFMI/hqdefault.jpg",
+    "videoId": "l-QxPYCPFMI"
+  },
+  {
+    "id": "rkm2iAzRWEg",
+    "title": "VT CAMBÉ 75 ANOS   FHD 1080p",
+    "thumbnail": "https://i.ytimg.com/vi/rkm2iAzRWEg/hqdefault.jpg",
+    "videoId": "rkm2iAzRWEg"
+  },
+  {
+    "id": "suqQUK21y7I",
+    "title": "VT Cambe Asfalto 2022   FHD",
+    "thumbnail": "https://i.ytimg.com/vi/suqQUK21y7I/hqdefault.jpg",
+    "videoId": "suqQUK21y7I"
+  },
+  {
+    "id": "71RbtCip5o4",
+    "title": "PAULINHO INSTAGRAM 01   stories",
+    "thumbnail": "https://i.ytimg.com/vi/71RbtCip5o4/hqdefault.jpg",
+    "videoId": "71RbtCip5o4"
+  },
+  {
+    "id": "Hw7TK1N9qes",
+    "title": "Candidato Hariel podcast   educação   legendado",
+    "thumbnail": "https://i.ytimg.com/vi/Hw7TK1N9qes/hqdefault.jpg",
+    "videoId": "Hw7TK1N9qes"
+  },
+  {
+    "id": "HyYi1TnyZUE",
+    "title": "Candidato Djalma comicio",
+    "thumbnail": "https://i.ytimg.com/vi/HyYi1TnyZUE/hqdefault.jpg",
+    "videoId": "HyYi1TnyZUE"
+  },
+  {
+    "id": "qVracTqcGEo",
+    "title": "Candidato Ney reels lancamento campanha 01 08   com legenda",
+    "thumbnail": "https://i.ytimg.com/vi/qVracTqcGEo/hqdefault.jpg",
+    "videoId": "qVracTqcGEo"
+  },
+  {
+    "id": "vUreveV_b78",
+    "title": "POLITICA   PROJETO PROPOSTA MEME   Juninho",
+    "thumbnail": "https://i.ytimg.com/vi/vUreveV_b78/hqdefault.jpg",
+    "videoId": "vUreveV_b78"
+  }
+];
+
 export default function App() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [youtubeVideos, setYoutubeVideos] = useState<VideoItem[]>([]);
+  const [youtubeVideos, setYoutubeVideos] = useState<VideoItem[]>(FALLBACK_CHANNEL_VIDEOS);
+  const [documentaryVideos, setDocumentaryVideos] = useState<VideoItem[]>(FALLBACK_PLAYLIST_VIDEOS);
+  const [eventsVideos, setEventsVideos] = useState<VideoItem[]>(FALLBACK_EVENTS_VIDEOS);
+  const [reelsVideos, setReelsVideos] = useState<VideoItem[]>(FALLBACK_REELS_VIDEOS);
+  const [institutionalVideos, setInstitutionalVideos] = useState<VideoItem[]>(FALLBACK_INSTITUTIONAL_VIDEOS);
+  const [politicsVideos, setPoliticsVideos] = useState<VideoItem[]>(FALLBACK_POLITICS_VIDEOS);
 
   useEffect(() => {
-    // Fetch latest videos from YouTube Channel (SintagmaMidia)
-    // Using rss2json as a free proxy to bypass CORS and API key requirements
-    const fetchYouTubeVideos = async () => {
-      try {
-        const channelId = 'UCubalZ-AjWT_MaTpvE1DS5A';
-        const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
-        const data = await response.json();
-        
-        if (data.status === 'ok' && data.items) {
-          const videos: VideoItem[] = data.items.map((item: any) => {
-            // Extract video ID from guid (e.g., "yt:video:_Dq45eJKYXg")
-            const videoId = item.guid.replace('yt:video:', '');
-            return {
-              id: videoId,
-              title: item.title,
-              thumbnail: item.thumbnail,
-              videoId: videoId
-            };
-          });
-          setYoutubeVideos(videos);
-        }
-      } catch (error) {
-        console.error('Error fetching YouTube videos:', error);
-      }
-    };
-
-    fetchYouTubeVideos();
+    // Videos are now loaded from the fallback arrays directly
   }, []);
 
   return (
@@ -538,6 +858,116 @@ export default function App() {
             >
               <Instagram className="w-5 h-5" />
               Instagram
+            </a>
+          </>
+        }
+      />
+
+      {/* Section 5: Documentário e Cultura */}
+      <CarouselSection 
+        id="documentario"
+        title="Documentário e Cultura" 
+        videos={documentaryVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+        socialLinks={
+          <>
+            <a 
+              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPY43unlZ9z58ZhKKD6r0hRc" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
+            >
+              <Youtube className="w-5 h-5" />
+              Ver Playlist
+            </a>
+          </>
+        }
+      />
+
+      {/* Section: Eventos */}
+      <CarouselSection 
+        id="eventos"
+        title="Eventos" 
+        videos={eventsVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+        socialLinks={
+          <>
+            <a 
+              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPYuTGMwS-6Worr4Or3SR-pl" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
+            >
+              <Youtube className="w-5 h-5" />
+              Ver Playlist
+            </a>
+          </>
+        }
+      />
+
+      {/* Section: Geração de conteúdos/reels */}
+      <CarouselSection 
+        id="reels"
+        title="Geração de conteúdos/reels" 
+        videos={reelsVideos} 
+        isVertical={true}
+        onPlay={setActiveVideo}
+        socialLinks={
+          <>
+            <a 
+              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPanZxNSiB2vliqfypJCIVqA" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
+            >
+              <Youtube className="w-5 h-5" />
+              Ver Playlist
+            </a>
+          </>
+        }
+      />
+
+      {/* Section: Institucional */}
+      <CarouselSection 
+        id="institucional"
+        title="Institucional" 
+        videos={institutionalVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+        socialLinks={
+          <>
+            <a 
+              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPbBrnTBae-GDIsh_IYtdR5F" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
+            >
+              <Youtube className="w-5 h-5" />
+              Ver Playlist
+            </a>
+          </>
+        }
+      />
+
+      {/* Section: Políticas contas públicas */}
+      <CarouselSection 
+        id="politicas"
+        title="Políticas contas públicas" 
+        videos={politicsVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+        socialLinks={
+          <>
+            <a 
+              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPaFk1qNeVOUfm2CXyGPGus7" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
+            >
+              <Youtube className="w-5 h-5" />
+              Ver Playlist
             </a>
           </>
         }
