@@ -67,7 +67,7 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[280px] sm:w-[360px]' : 'w-[85vw] sm:w-[600px] lg:w-[800px]'}`}
+      className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[240px] sm:w-[300px]' : 'w-[80vw] sm:w-[450px] lg:w-[600px]'}`}
     >
       <article 
         className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" 
@@ -78,8 +78,8 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
       >
         <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden`}>
           <img 
-            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 360 : 800)} 
-            alt={`Thumbnail do vídeo: ${video.title} - SintagmaFilms Produtora Audiovisual`}
+            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 300 : 600)} 
+            alt={`Thumbnail do vídeo: ${video.title} - SintagmaMidia Produtora Audiovisual`}
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
             referrerPolicy="no-referrer"
             loading="lazy"
@@ -234,7 +234,7 @@ const BriefingForm = () => {
       );
       
       // Open default email client
-      window.location.href = `mailto:sintagmafilmes@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:sintagmamidia@gmail.com?subject=${subject}&body=${body}`;
       
       setStatus('success');
       setFormData({ nome: '', empresa: '', objetivo: '' });
@@ -670,6 +670,26 @@ export default function App() {
                 </motion.span>
               ))}
             </span>
+            <br className="hidden sm:block" />
+            <span className="inline-block">
+              {"e Marketing".split("").map((char, index) => (
+                <motion.span 
+                  key={index} 
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -40 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      rotateX: 0,
+                      transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }
+                    }
+                  }} 
+                  className="inline-block origin-bottom"
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -677,7 +697,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 1.0 }}
             className="text-base sm:text-lg md:text-2xl text-zinc-300 mb-8 sm:mb-12 max-w-3xl font-light tracking-wide px-2"
           >
-            Conteúdo estratégico para campanhas políticas, comunicação institucional e presença digital.
+            Conteúdo estratégia, conteúdo para campanhas políticas, comunicação institucional, TV e presença digital
           </motion.p>
           <motion.a 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -728,7 +748,7 @@ export default function App() {
               className="lg:col-span-7 lg:pl-12 border-t border-zinc-800 pt-6 sm:pt-8 lg:border-t-0 lg:border-l lg:pt-0"
             >
               <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light mb-6">
-                A <strong className="text-white font-medium">SintagmaFilms</strong> é uma <strong className="text-white font-medium">produtora audiovisual em Londrina</strong> especializada em conteúdo para campanhas políticas, comunicação pública e presença digital.
+                A <strong className="text-white font-medium">SintagmaMidia</strong> é uma <strong className="text-white font-medium">produtora audiovisual em Londrina</strong> especializada em conteúdo para campanhas políticas, comunicação pública e presença digital.
               </p>
               <p className="text-lg sm:text-xl text-zinc-500 leading-relaxed font-light">
                 Desenvolvemos vídeos estratégicos de alta qualidade para televisão, internet e redes sociais, conectando sua mensagem ao público certo com impacto e criatividade.
@@ -745,19 +765,6 @@ export default function App() {
         videos={documentaryVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPY43unlZ9z58ZhKKD6r0hRc" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              Ver Playlist
-            </a>
-          </>
-        }
       />
 
       {/* Section: Eventos */}
@@ -767,19 +774,6 @@ export default function App() {
         videos={eventsVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPYuTGMwS-6Worr4Or3SR-pl" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              Ver Playlist
-            </a>
-          </>
-        }
       />
 
       {/* Section: Geração de conteúdos/reels */}
@@ -789,19 +783,6 @@ export default function App() {
         videos={reelsVideos} 
         isVertical={true}
         onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPanZxNSiB2vliqfypJCIVqA" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              Ver Playlist
-            </a>
-          </>
-        }
       />
 
       {/* Section: Institucional */}
@@ -811,19 +792,6 @@ export default function App() {
         videos={institutionalVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPbBrnTBae-GDIsh_IYtdR5F" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              Ver Playlist
-            </a>
-          </>
-        }
       />
 
       {/* Section: Políticas contas públicas */}
@@ -833,19 +801,6 @@ export default function App() {
         videos={politicsVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
-        socialLinks={
-          <>
-            <a 
-              href="https://www.youtube.com/playlist?list=PLViy6sxGKxPaFk1qNeVOUfm2CXyGPGus7" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-display font-bold uppercase text-sm tracking-wider"
-            >
-              <Youtube className="w-5 h-5" />
-              Ver Playlist
-            </a>
-          </>
-        }
       />
 
       {/* Section 6: Contato */}
@@ -878,8 +833,8 @@ export default function App() {
                 
                 <div>
                   <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</h3>
-                  <a href="mailto:sintagmafilmes@gmail.com" className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium hover:text-sky-400 transition-colors break-all">
-                    sintagmafilmes@gmail.com
+                  <a href="mailto:sintagmamidia@gmail.com" className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium hover:text-sky-400 transition-colors break-all">
+                    sintagmamidia@gmail.com
                   </a>
                 </div>
                 
@@ -901,7 +856,7 @@ export default function App() {
               className="lg:pt-4 flex flex-col justify-center space-y-4 sm:space-y-6"
             >
               <a 
-                href="https://wa.me/5543999477677?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20SintagmaFilms."
+                href="https://wa.me/5543999477677?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20SintagmaMidia."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-display font-bold uppercase tracking-wider py-4 sm:py-6 px-6 sm:px-8 rounded-none transition-all flex items-center justify-between text-base sm:text-lg md:text-xl"
@@ -932,7 +887,7 @@ export default function App() {
           className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left"
         >
           <div className="text-xl sm:text-2xl font-display font-black text-white tracking-tighter uppercase">
-            Sintagma<span className="text-sky-400">Films</span>
+            Sintagma<span className="text-sky-400">Midia</span>
           </div>
           <p className="text-zinc-600 text-xs sm:text-sm font-display uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Todos os direitos reservados.
