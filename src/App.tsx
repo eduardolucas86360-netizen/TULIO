@@ -50,7 +50,7 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
     // Delay loading the iframe to prevent accidental loads while scrolling/moving mouse quickly
     hoverTimeoutRef.current = setTimeout(() => {
       setShowIframe(true);
-    }, 300);
+    }, 600);
   };
 
   const handleMouseLeave = () => {
@@ -67,20 +67,20 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[240px] sm:w-[300px]' : 'w-[80vw] sm:w-[450px] lg:w-[600px]'}`}
+      className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[180px] sm:w-[240px]' : 'w-[75vw] sm:w-[350px] lg:w-[450px]'} h-auto`}
     >
       <article 
-        className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-sky-500/20 hover:z-10" 
+        className="group relative overflow-hidden bg-zinc-900 cursor-pointer transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-sky-500/30 hover:z-10 h-full flex flex-col" 
         onClick={() => onPlay(video.videoId)} 
         data-video-hover="true"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden`}>
+        <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden shrink-0`}>
           <img 
-            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 300 : 600)} 
+            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 240 : 450)} 
             alt={`Thumbnail do vídeo: ${video.title} - SintagmaMidia Produtora Audiovisual`}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
             referrerPolicy="no-referrer"
             loading="lazy"
           />
@@ -103,15 +103,15 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
             </motion.div>
           )}
 
-          <div className={`absolute inset-0 transition-colors duration-500 z-10 ${showIframe ? 'bg-transparent' : 'bg-black/40 group-hover:bg-black/10'}`} />
+          <div className={`absolute inset-0 transition-colors duration-500 z-10 ${showIframe ? 'bg-transparent' : 'bg-black/10 group-hover:bg-black/40'}`} />
           
           <div className={`absolute inset-0 flex items-center justify-center z-20 transition-opacity duration-500 ${showIframe ? 'opacity-0' : 'opacity-100'}`}>
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center text-white transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-black/30 border border-white/50 backdrop-blur-md flex items-center justify-center text-white transform scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-out shadow-2xl">
               <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" fill="currentColor" />
             </div>
           </div>
         </div>
-        <div className="py-4 sm:py-6 relative z-20 bg-zinc-900">
+        <div className="py-4 sm:py-6 relative z-20 bg-zinc-900 flex-grow">
           <h3 className="text-lg sm:text-xl md:text-2xl font-display font-semibold text-white uppercase tracking-tight line-clamp-2">
             {video.title}
           </h3>
@@ -213,122 +213,7 @@ const CarouselSection = ({
   );
 };
 
-const BriefingForm = () => {
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
-  const [formData, setFormData] = useState({
-    nome: '',
-    empresa: '',
-    objetivo: ''
-  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-    
-    // Simulate network request
-    setTimeout(() => {
-      // Construct email body
-      const subject = encodeURIComponent(`Novo Briefing: ${formData.empresa} - ${formData.nome}`);
-      const body = encodeURIComponent(
-        `Nome: ${formData.nome}\nEmpresa: ${formData.empresa}\nObjetivo do Projeto: ${formData.objetivo}`
-      );
-      
-      // Open default email client
-      window.location.href = `mailto:sintagmamidia@gmail.com?subject=${subject}&body=${body}`;
-      
-      setStatus('success');
-      setFormData({ nome: '', empresa: '', objetivo: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setStatus('idle'), 5000);
-    }, 800);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  if (status === 'success') {
-    return (
-      <div className="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-        <div className="w-16 h-16 bg-sky-500/20 text-sky-400 rounded-full flex items-center justify-center mb-4">
-          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-tighter mb-2">Briefing Enviado!</h3>
-        <p className="text-zinc-400 font-display">Obrigado pelo interesse. Seu cliente de e-mail foi aberto com os dados do projeto. Entraremos em contato em breve.</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 flex flex-col space-y-4 sm:space-y-6">
-      <div>
-        <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-tighter mb-2">Iniciar Projeto</h3>
-        <p className="text-zinc-400 text-sm sm:text-base font-display mb-4">Preencha o briefing rápido e enviaremos uma proposta.</p>
-      </div>
-      
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="nome" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Nome Completo</label>
-          <input 
-            type="text" 
-            id="nome" 
-            name="nome" 
-            required
-            value={formData.nome}
-            onChange={handleChange}
-            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display"
-            placeholder="Seu nome"
-          />
-        </div>
-        
-        <div>
-          <label htmlFor="empresa" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Empresa</label>
-          <input 
-            type="text" 
-            id="empresa" 
-            name="empresa" 
-            required
-            value={formData.empresa}
-            onChange={handleChange}
-            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display"
-            placeholder="Nome da sua empresa"
-          />
-        </div>
-        
-        <div>
-          <label htmlFor="objetivo" className="block text-xs font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Objetivo do Projeto</label>
-          <select 
-            id="objetivo" 
-            name="objetivo" 
-            required
-            value={formData.objetivo}
-            onChange={handleChange}
-            className="w-full bg-black border border-zinc-800 text-white px-4 py-3 focus:outline-none focus:border-sky-500 transition-colors font-display appearance-none"
-          >
-            <option value="" disabled>Selecione uma opção</option>
-            <option value="Vídeo Institucional">Vídeo Institucional</option>
-            <option value="Comercial / Publicidade">Comercial / Publicidade</option>
-            <option value="Cobertura de Evento">Cobertura de Evento</option>
-            <option value="Conteúdo para Redes Sociais">Conteúdo para Redes Sociais</option>
-            <option value="Outro">Outro</option>
-          </select>
-        </div>
-      </div>
-      
-      <button 
-        type="submit" 
-        disabled={status === 'submitting'}
-        className="w-full bg-white hover:bg-zinc-200 text-black font-display font-bold uppercase tracking-wider py-4 px-6 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
-      >
-        {status === 'submitting' ? 'Enviando...' : 'Enviar Briefing'}
-        {status !== 'submitting' && <ArrowRight className="w-5 h-5" />}
-      </button>
-    </form>
-  );
-};
 
 const FALLBACK_PLAYLIST_VIDEOS: VideoItem[] = [
   {
@@ -815,7 +700,7 @@ export default function App() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <h2 className="text-5xl sm:text-6xl md:text-8xl font-display font-black text-white uppercase tracking-tighter mb-6 sm:mb-8 leading-none">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white uppercase tracking-tighter mb-6 sm:mb-8 leading-tight">
                 Fale <br/>
                 <span className="text-sky-400">Conosco</span>
               </h2>
@@ -825,22 +710,22 @@ export default function App() {
               
               <div className="space-y-8 sm:space-y-10">
                 <div>
-                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Telefone</h3>
-                  <a href="tel:+5543999477677" className="text-white text-2xl sm:text-3xl md:text-4xl font-display font-medium hover:text-sky-400 transition-colors">
+                  <h3 className="text-xs sm:text-sm font-sans font-bold text-zinc-500 uppercase tracking-widest mb-2">Telefone</h3>
+                  <a href="tel:+5543999477677" className="text-white text-2xl sm:text-3xl md:text-4xl font-sans font-medium hover:text-sky-400 transition-colors">
                     +55 43 99947-7677
                   </a>
                 </div>
                 
                 <div>
-                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</h3>
-                  <a href="mailto:sintagmamidia@gmail.com" className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium hover:text-sky-400 transition-colors break-all">
+                  <h3 className="text-xs sm:text-sm font-sans font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</h3>
+                  <a href="mailto:sintagmamidia@gmail.com" className="text-white text-xl sm:text-2xl md:text-3xl font-sans font-medium hover:text-sky-400 transition-colors break-all">
                     sintagmamidia@gmail.com
                   </a>
                 </div>
                 
                 <div>
-                  <h3 className="text-xs sm:text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-2">Localização</h3>
-                  <p className="text-white text-xl sm:text-2xl md:text-3xl font-display font-medium">
+                  <h3 className="text-xs sm:text-sm font-sans font-bold text-zinc-500 uppercase tracking-widest mb-2">Localização</h3>
+                  <p className="text-white text-xl sm:text-2xl md:text-3xl font-sans font-medium">
                     Londrina, PR
                   </p>
                 </div>
@@ -867,8 +752,6 @@ export default function App() {
                 </div>
                 <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 flex-shrink-0" />
               </a>
-
-              <BriefingForm />
             </motion.div>
             
           </div>
