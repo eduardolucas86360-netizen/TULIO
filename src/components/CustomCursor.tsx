@@ -96,6 +96,7 @@ export default function CustomCursor() {
     <>
       {/* Main Cursor */}
       <div
+        id="custom-cursor-container"
         ref={cursorRef}
         className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center -ml-[18px] -mt-[18px]"
         style={{ willChange: 'transform' }}

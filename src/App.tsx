@@ -18,22 +18,54 @@ type VideoItem = {
 // --- Components ---
 
 const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean; onClose: () => void; videoId: string | null }) => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsPlaying(true);
+    }
+  }, [isOpen]);
+
   if (!isOpen || !videoId) return null;
 
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      const command = isPlaying ? 'pauseVideo' : 'playVideo';
+      iframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: command, args: [] }), '*');
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm cursor-pointer"
+      onClick={onClose}
+    >
       <button 
         onClick={onClose}
         className="absolute top-6 right-6 text-white hover:text-sky-400 transition-colors z-50"
       >
         <X className="w-10 h-10" strokeWidth={1.5} />
       </button>
-      <div className="w-full max-w-6xl aspect-video bg-zinc-900 overflow-hidden shadow-2xl relative">
+      <div 
+        className="w-full max-w-6xl aspect-video bg-zinc-900 overflow-hidden shadow-2xl relative cursor-default" 
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-          className="absolute inset-0 w-full h-full"
+          ref={iframeRef}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&enablejsapi=1`}
+          className="absolute inset-0 w-full h-full pointer-events-none"
           allow="autoplay; encrypted-media"
           allowFullScreen
+        />
+        {/* Transparent overlay to capture mouse events for the custom cursor and handle play/pause clicks */}
+        <div 
+          className="absolute inset-0 z-10 cursor-pointer" 
+          onClick={togglePlay}
         />
       </div>
     </div>
@@ -43,6 +75,7 @@ const VideoModal = ({ isOpen, onClose, videoId }: { isOpen: boolean; onClose: ()
 const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isVertical?: boolean, onPlay: (id: string) => void, index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showIframe, setShowIframe] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
@@ -65,7 +98,8 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      onViewportEnter={() => setIsInView(true)}
+      viewport={{ once: true, margin: "200px" }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
       className={`flex-none pl-4 sm:pl-6 ${isVertical ? 'w-[180px] sm:w-[240px]' : 'w-[75vw] sm:w-[350px] lg:w-[450px]'} h-auto`}
     >
@@ -77,15 +111,17 @@ const VideoCard = ({ video, isVertical, onPlay, index }: { video: VideoItem, isV
         onMouseLeave={handleMouseLeave}
       >
         <div className={`relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'} overflow-hidden shrink-0`}>
-          <img 
-            src={getOptimizedImageUrl(video.thumbnail, isVertical ? 240 : 450)} 
-            alt={`Thumbnail do vídeo: ${video.title} - SintagmaMidia Produtora Audiovisual`}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
-            referrerPolicy="no-referrer"
-            loading="lazy"
-          />
+          {isInView && (
+            <img 
+              src={getOptimizedImageUrl(video.thumbnail, isVertical ? 240 : 450)} 
+              alt={`Thumbnail do vídeo: ${video.title} - SintagmaMidia Produtora Audiovisual`}
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${showIframe ? 'opacity-0' : 'opacity-80 group-hover:opacity-100'}`}
+              referrerPolicy="no-referrer"
+              loading="lazy"
+            />
+          )}
           
-          {showIframe && (
+          {showIframe && isInView && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -334,6 +370,12 @@ const FALLBACK_REELS_VIDEOS: VideoItem[] = [
 
 const FALLBACK_INSTITUTIONAL_VIDEOS: VideoItem[] = [
   {
+    "id": "_HnT1Rbs_3Y",
+    "title": "INSTITUCIONAL IBIPORA 09 05 2025 c legenda",
+    "thumbnail": "https://i.ytimg.com/vi/_HnT1Rbs_3Y/hqdefault.jpg",
+    "videoId": "_HnT1Rbs_3Y"
+  },
+  {
     id: "foSgpqZjFrI",
     title: "Institucional Grupo Rossetto",
     thumbnail: "https://i.ytimg.com/vi/foSgpqZjFrI/hqdefault.jpg",
@@ -356,6 +398,12 @@ const FALLBACK_INSTITUTIONAL_VIDEOS: VideoItem[] = [
     title: "AMEPAR Instittucional",
     thumbnail: "https://i.ytimg.com/vi/0v6ys4xxdYY/hqdefault.jpg",
     videoId: "0v6ys4xxdYY"
+  },
+  {
+    "id": "JZx4R1k2R4M",
+    "title": "Londrina   Video Institucional   4k",
+    "thumbnail": "https://i.ytimg.com/vi/JZx4R1k2R4M/hqdefault.jpg",
+    "videoId": "JZx4R1k2R4M"
   },
   {
     id: "PcVzKS69m18",
@@ -594,7 +642,7 @@ export default function App() {
         <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
           <iframe
             src="https://www.youtube.com/embed/ULFBrcmWjH4?autoplay=1&mute=1&loop=1&playlist=ULFBrcmWjH4&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100dvh] min-w-[177.77dvh] -translate-x-1/2 -translate-y-1/2 border-none max-w-none"
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100dvh] min-w-[177.77dvh] -translate-x-1/2 -translate-y-1/2 border-none max-w-none pointer-events-none"
             allow="autoplay; encrypted-media"
             allowFullScreen
             tabIndex={-1}
@@ -737,7 +785,7 @@ export default function App() {
               className="lg:col-span-7 lg:pl-12 border-t border-zinc-800 pt-6 sm:pt-8 lg:border-t-0 lg:border-l lg:pt-0"
             >
               <p className="text-xl sm:text-2xl md:text-3xl text-zinc-400 leading-snug font-light mb-6">
-                A <strong className="text-white font-medium">SintagmaMidia</strong> é uma <strong className="text-white font-medium">produtora audiovisual em Londrina</strong> especializada em conteúdo para campanhas políticas, comunicação pública e presença digital.
+                <strong className="text-white font-medium">SintagmaMidia</strong> é uma empresa de comunicação especializada em estratégias e audiovisual.
               </p>
               <p className="text-lg sm:text-xl text-zinc-500 leading-relaxed font-light">
                 Desenvolvemos estratégias de comunicação de vídeos de alta qualidade para televisão, internet e redes sociais, conectando sua mensagem ao público certo com impacto e criatividade.
@@ -765,10 +813,10 @@ export default function App() {
         onPlay={setActiveVideo}
       />
 
-      {/* Section: Política */}
+      {/* Section: Política/Conta Pública */}
       <CarouselSection 
         id="politicas"
-        title="Política" 
+        title="Política/Conta Pública" 
         videos={politicsVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
@@ -792,10 +840,10 @@ export default function App() {
         onPlay={setActiveVideo}
       />
 
-      {/* Section: Documentário */}
+      {/* Section: Documentário/Cultura */}
       <CarouselSection 
         id="documentario"
-        title="Documentário" 
+        title="Documentário/Cultura" 
         videos={documentaryVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
