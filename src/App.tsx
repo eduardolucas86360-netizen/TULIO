@@ -636,7 +636,7 @@ export default function App() {
                 A <strong className="text-white font-medium">SintagmaMidia</strong> é uma <strong className="text-white font-medium">produtora audiovisual em Londrina</strong> especializada em conteúdo para campanhas políticas, comunicação pública e presença digital.
               </p>
               <p className="text-lg sm:text-xl text-zinc-500 leading-relaxed font-light">
-                Desenvolvemos vídeos estratégicos de alta qualidade para televisão, internet e redes sociais, conectando sua mensagem ao público certo com impacto e criatividade.
+                Desenvolvemos estratégias de comunicação de vídeos de alta qualidade para televisão, internet e redes sociais, conectando sua mensagem ao público certo com impacto e criatividade.
               </p>
             </motion.div>
           </div>
@@ -711,8 +711,8 @@ export default function App() {
               <div className="space-y-8 sm:space-y-10">
                 <div>
                   <h3 className="text-xs sm:text-sm font-sans font-bold text-zinc-500 uppercase tracking-widest mb-2">Telefone</h3>
-                  <a href="tel:+5543999477677" className="text-white text-2xl sm:text-3xl md:text-4xl font-sans font-medium hover:text-sky-400 transition-colors">
-                    +55 43 99947-7677
+                  <a href="tel:+5543999687270" className="text-white text-2xl sm:text-3xl md:text-4xl font-sans font-medium hover:text-sky-400 transition-colors">
+                    +55 43 99968-7270
                   </a>
                 </div>
                 
@@ -726,7 +726,7 @@ export default function App() {
                 <div>
                   <h3 className="text-xs sm:text-sm font-sans font-bold text-zinc-500 uppercase tracking-widest mb-2">Localização</h3>
                   <p className="text-white text-xl sm:text-2xl md:text-3xl font-sans font-medium">
-                    Londrina, PR
+                    Londrina e Curitiba, PR
                   </p>
                 </div>
               </div>
@@ -741,7 +741,7 @@ export default function App() {
               className="lg:pt-4 flex flex-col justify-center space-y-4 sm:space-y-6"
             >
               <a 
-                href="https://wa.me/5543999477677?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20SintagmaMidia."
+                href="https://wa.me/5543999687270?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20SintagmaMidia."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-display font-bold uppercase tracking-wider py-4 sm:py-6 px-6 sm:px-8 rounded-none transition-all flex items-center justify-between text-base sm:text-lg md:text-xl"
