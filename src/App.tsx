@@ -464,6 +464,108 @@ const FALLBACK_POLITICS_VIDEOS: VideoItem[] = [
   }
 ];
 
+const FALLBACK_PROPAGANDA_TV_VIDEOS: VideoItem[] = [
+  {
+    "id": "02mJts5gCMk",
+    "title": "VT Apucarana Saude",
+    "thumbnail": "https://i.ytimg.com/vi/02mJts5gCMk/hqdefault.jpg",
+    "videoId": "02mJts5gCMk"
+  },
+  {
+    "id": "1ICr6FwQSxQ",
+    "title": "VT HOSPITALAR 30s   V3   cinema",
+    "thumbnail": "https://i.ytimg.com/vi/1ICr6FwQSxQ/hqdefault.jpg",
+    "videoId": "1ICr6FwQSxQ"
+  },
+  {
+    "id": "28YoibomCnM",
+    "title": "Inst Gleba 2019   1min   2K FHD",
+    "thumbnail": "https://i.ytimg.com/vi/28YoibomCnM/hqdefault.jpg",
+    "videoId": "28YoibomCnM"
+  },
+  {
+    "id": "Cbitql5ftic",
+    "title": "VT 30S IBIPORA 77 ANOS   internet",
+    "thumbnail": "https://i.ytimg.com/vi/Cbitql5ftic/hqdefault.jpg",
+    "videoId": "Cbitql5ftic"
+  },
+  {
+    "id": "TtROmo9ukA0",
+    "title": "VT Keydesign   COPA 2018",
+    "thumbnail": "https://i.ytimg.com/vi/TtROmo9ukA0/hqdefault.jpg",
+    "videoId": "TtROmo9ukA0"
+  },
+  {
+    "id": "bQR9L2SKaXM",
+    "title": "VT IVAIPORÃ EXPOVALE 2024",
+    "thumbnail": "https://i.ytimg.com/vi/bQR9L2SKaXM/hqdefault.jpg",
+    "videoId": "bQR9L2SKaXM"
+  },
+  {
+    "id": "tQk8tl2JU3g",
+    "title": "VT CAMARA APUCARANA   NAO PODE FALTAR v2",
+    "thumbnail": "https://i.ytimg.com/vi/tQk8tl2JU3g/hqdefault.jpg",
+    "videoId": "tQk8tl2JU3g"
+  },
+  {
+    "id": "tQlvjK5PcH0",
+    "title": "Campanha Contra Aborto 1080p",
+    "thumbnail": "https://i.ytimg.com/vi/tQlvjK5PcH0/hqdefault.jpg",
+    "videoId": "tQlvjK5PcH0"
+  }
+];
+
+const FALLBACK_ANIMATIONS_VIDEOS: VideoItem[] = [
+  {
+    "id": "1BBsfhkDsEE",
+    "title": "VT LIXO Ministerio Puplico londrina   Internet",
+    "thumbnail": "https://i.ytimg.com/vi/1BBsfhkDsEE/hqdefault.jpg",
+    "videoId": "1BBsfhkDsEE"
+  },
+  {
+    "id": "AD34w9E08sU",
+    "title": "Animação APP  In Soccer",
+    "thumbnail": "https://i.ytimg.com/vi/AD34w9E08sU/hqdefault.jpg",
+    "videoId": "AD34w9E08sU"
+  },
+  {
+    "id": "GuZxGcyLwh4",
+    "title": "VT Seu Dirço   ANIMACAO E LIVE ACTION",
+    "thumbnail": "https://i.ytimg.com/vi/GuZxGcyLwh4/hqdefault.jpg",
+    "videoId": "GuZxGcyLwh4"
+  },
+  {
+    "id": "_7vmiJmZ_K4",
+    "title": "Animação Consórcio União   final",
+    "thumbnail": "https://i.ytimg.com/vi/_7vmiJmZ_K4/hqdefault.jpg",
+    "videoId": "_7vmiJmZ_K4"
+  },
+  {
+    "id": "cYsuJ0S7blY",
+    "title": "VT LIXO PREFEITURA IBIPORA",
+    "thumbnail": "https://i.ytimg.com/vi/cYsuJ0S7blY/hqdefault.jpg",
+    "videoId": "cYsuJ0S7blY"
+  },
+  {
+    "id": "rK6EGJozoc4",
+    "title": "Institucional ANPARA   Animação",
+    "thumbnail": "https://i.ytimg.com/vi/rK6EGJozoc4/hqdefault.jpg",
+    "videoId": "rK6EGJozoc4"
+  },
+  {
+    "id": "vlmIq9A5MvM",
+    "title": "Uniprime   linha do tempo",
+    "thumbnail": "https://i.ytimg.com/vi/vlmIq9A5MvM/hqdefault.jpg",
+    "videoId": "vlmIq9A5MvM"
+  },
+  {
+    "id": "zNTrNlAb1Sw",
+    "title": "Ibipora IPTU 2022",
+    "thumbnail": "https://i.ytimg.com/vi/zNTrNlAb1Sw/hqdefault.jpg",
+    "videoId": "zNTrNlAb1Sw"
+  }
+];
+
 export default function App() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [documentaryVideos, setDocumentaryVideos] = useState<VideoItem[]>(FALLBACK_PLAYLIST_VIDEOS);
@@ -471,6 +573,8 @@ export default function App() {
   const [reelsVideos, setReelsVideos] = useState<VideoItem[]>(FALLBACK_REELS_VIDEOS);
   const [institutionalVideos, setInstitutionalVideos] = useState<VideoItem[]>(FALLBACK_INSTITUTIONAL_VIDEOS);
   const [politicsVideos, setPoliticsVideos] = useState<VideoItem[]>(FALLBACK_POLITICS_VIDEOS);
+  const [propagandaTvVideos, setPropagandaTvVideos] = useState<VideoItem[]>(FALLBACK_PROPAGANDA_TV_VIDEOS);
+  const [animationsVideos, setAnimationsVideos] = useState<VideoItem[]>(FALLBACK_ANIMATIONS_VIDEOS);
 
   useEffect(() => {
     // Videos are now loaded from the fallback arrays directly
@@ -643,28 +747,10 @@ export default function App() {
         </div>
       </section>
 
-      {/* Section 5: Documentário e Cultura */}
-      <CarouselSection 
-        id="documentario"
-        title="Documentário e Cultura" 
-        videos={documentaryVideos} 
-        isVertical={false}
-        onPlay={setActiveVideo}
-      />
-
-      {/* Section: Eventos */}
-      <CarouselSection 
-        id="eventos"
-        title="Eventos" 
-        videos={eventsVideos} 
-        isVertical={false}
-        onPlay={setActiveVideo}
-      />
-
-      {/* Section: Geração de conteúdos/reels */}
+      {/* Section 5: Geração de Conteúdo */}
       <CarouselSection 
         id="reels"
-        title="Geração de conteúdos/reels" 
+        title="Geração de Conteúdo" 
         videos={reelsVideos} 
         isVertical={true}
         onPlay={setActiveVideo}
@@ -679,11 +765,47 @@ export default function App() {
         onPlay={setActiveVideo}
       />
 
-      {/* Section: Políticas contas públicas */}
+      {/* Section: Política */}
       <CarouselSection 
         id="politicas"
-        title="Políticas contas públicas" 
+        title="Política" 
         videos={politicsVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+      />
+
+      {/* Section: Propaganda */}
+      <CarouselSection 
+        id="propaganda-tv"
+        title="Propaganda" 
+        videos={propagandaTvVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+      />
+
+      {/* Section: Animação */}
+      <CarouselSection 
+        id="animacoes"
+        title="Animação" 
+        videos={animationsVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+      />
+
+      {/* Section: Documentário */}
+      <CarouselSection 
+        id="documentario"
+        title="Documentário" 
+        videos={documentaryVideos} 
+        isVertical={false}
+        onPlay={setActiveVideo}
+      />
+
+      {/* Section: Eventos */}
+      <CarouselSection 
+        id="eventos"
+        title="Eventos" 
+        videos={eventsVideos} 
         isVertical={false}
         onPlay={setActiveVideo}
       />
