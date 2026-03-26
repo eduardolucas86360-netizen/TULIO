@@ -734,7 +734,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 1.0 }}
             className="text-base sm:text-lg md:text-2xl text-zinc-300 mb-8 sm:mb-12 max-w-3xl font-light tracking-wide px-2"
           >
-            Conteúdo estratégia, conteúdo para campanhas políticas, comunicação institucional, TV e presença digital
+            Estratégia, conteúdo para campanhas políticas, comunicação institucional, TV e presença digital.
           </motion.p>
           <motion.a 
             initial={{ opacity: 0, scale: 0.9 }}
